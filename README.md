@@ -1,29 +1,36 @@
-# truckpad
+# Case Truckpad - desafio
+Aplicativo simples para cadastrar motoristas de todo o Brasil, onde podemos editar, criar e inativar um motorista.
 
-## Project setup
+``Framework usado : Vue.js e Vuetify`` 
+
+## Baixe o projeto
+
+###  ```Direto do repositorio```.
+``` 
+git clone https://github.com/.git 
+```
+
+## Ao baixar o projeto execute os comandos abaixo para baixar as dependências.
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Iniciar Aplicação
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Preparar projeto para produção
 ```
 npm run build
 ```
 
-### Run your tests
+### Executar Testes
 ```
 npm run test
 ```
 
-### Lints and fixes files
+### Executar eslint
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
