@@ -7,7 +7,7 @@ Aplicativo simples para cadastrar motoristas de todo o Brasil, onde podemos edit
 
 ###  ```Direto do repositorio```.
 ``` 
-git clone https://github.com/.git 
+git clone https://github.com/stephanyGuerrero/Case-Truckpad-desafio.git 
 ```
 
 ## Ao baixar o projeto execute os comandos abaixo para baixar as dependências.
