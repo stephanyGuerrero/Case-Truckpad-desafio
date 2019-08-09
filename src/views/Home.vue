@@ -1,13 +1,25 @@
 <template>
-  <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+
+  <v-flex id="fondo-motorista">
+<v-layout align-center justify-center fill-height class="mx-5 my-5">
+  <v-flex>
+    <v-btn> Voltar </v-btn>
+    <v-btn> Gostou ?</v-btn>
+  </v-flex>
+
+  
+  <v-data-table :headers="headers" :items="motoristas" sort-by="calories" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>My CRUD</v-toolbar-title>
+        <v-toolbar-title>MOTORISTAS</v-toolbar-title>
+
         <v-divider class="mx-4" inset vertical></v-divider>
+
         <v-spacer></v-spacer>
+
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
+            <v-btn color="primary" dark class="mb-2" v-on="on">Novo Motorista</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -18,26 +30,71 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
+                    <v-text-field v-model="editedItem.name" label="Nome"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
+                    <v-text-field v-model="editedItem.birth_date" label="Data de nascimento"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
+                    <v-text-field v-model="editedItem.state" label="Estado"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
+                    <v-text-field v-model="editedItem.city" label="Cidade"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
+                    <v-text-field v-model="editedItem.addresses.country" label="País"></v-text-field>
                   </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.addresses.neighborhood" label="Bairro"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.addresses.city" label="Cidade"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.addresses.street_name" label="Nome da Rua"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.addresses.street_number" label="N*"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.addresses.postal_code" label="CEP"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.addresses.complement" label="Complemento"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documents.expires_at" label="Expiração"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documents.country" label="Pais"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documents.number" label="Numero"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documents.doc_type" label="Tipo de Documento"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documents.category" label="Categoria"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documents.nacionality" label="Nacionalidade"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documents.number2" label="Numero de Documento"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documents.doc_type2" label="Tipo de Documento"></v-text-field>
+                  </v-flex>
+
+
                 </v-layout>
               </v-container>
             </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
+
               <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
               <v-btn color="blue darken-1" text @click="save">Save</v-btn>
             </v-card-actions>
@@ -45,53 +102,107 @@
         </v-dialog>
       </v-toolbar>
     </template>
+
     <template v-slot:item.action="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
     </template>
-    <template v-slot:no-data>
+
+    <template>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>
   </v-data-table>
+
+
+</v-layout>
+  </v-flex>
+
 </template>
 <script>
 export default {
   data: () => ({
     dialog: false,
+    sortable: false,
     headers: [
       {
-        text: "Dessert (100g serving)",
+        text: "Nome",
         align: "left",
         sortable: false,
         value: "name"
       },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
+      { text: "Data de nascimento", value: "birth_date", sortable: false },
+      { text: "Cidade", value: "city", sortable: false },
+      {
+        text: "Tipo de Documento",
+        value: "documents.doc_type",
+        sortable: false
+      },
+      { text: "Categoria", value: "documents.category", sortable: false },
       { text: "Actions", value: "action", sortable: false }
     ],
-    desserts: [],
+    motoristas: [],
     editedIndex: -1,
     editedItem: {
       name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
+      birth_date: "",
+      state: "",
+      city: "",
+      addresses: {
+        name: "",
+        state: "",
+        country: "",
+        neighborhood: "",
+        city: "",
+        street_number: "",
+        complement: "",
+        postal_code: "",
+        street_name: ""
+      },
+      documents: {
+        expires_at: "",
+        country: "",
+        number: "",
+        doc_type: "",
+        category: "",
+
+        nacionality: "",
+        number: "",
+        doc_type2: ""
+      }
     },
     defaultItem: {
       name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
+      birth_date: "",
+      state: "",
+      city: "",
+      addresses: {
+        name: "",
+        state: "",
+        country: "",
+        neighborhood: "",
+        city: "",
+        street_number: "",
+        complement: "",
+        postal_code: "",
+        street_name: ""
+      },
+      documents: {
+        expires_at: "",
+        country: "",
+        number: "",
+        doc_type: "",
+        category: "",
+
+        nacionality: "",
+        number: "",
+        doc_type2: ""
+      }
     }
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "Novo Motorista" : "Editar Motorista";
     }
   },
 
@@ -107,90 +218,75 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
+      this.motoristas = [
         {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0
+          name: "Pouca Tripa",
+          birth_date: "1976-09-22T00:00:00",
+          state: "São Paulo",
+          city: "São Paulo",
+          addresses: {
+            state: "São Paulo",
+            country: "BR",
+            neighborhood: "CENTRO",
+            city: "São Paulo",
+            street_number: 24,
+            complement: "apartamento",
+            postal_code: "01300-000",
+            street_name: "Avenida Paulista"
+          },
+          documents: {
+            expires_at: "2010-11-23T00:00:00+00:00",
+            country: "BR",
+            number: "700441702",
+            doc_type: "CNH",
+            category: "AB",
+
+            nacionality: "BR",
+            number2: "32132132188",
+            doc_type2: "CPF"
+          }
+          
         },
         {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7
+          name: "Quase nada",
+          birth_date: "1986-09-22T00:00:00",
+          state: "Rio de Janeiro",
+          city: "Niterói",
+          addresses: {
+            state: "",
+            country: "",
+            neighborhood: "",
+            city: "",
+            street_number: "",
+            complement: "",
+            postal_code: "",
+            street_name: ""
+          },
+          documents: {
+            expires_at: "",
+            country: "",
+            number: "",
+            doc_type: "",
+            category: "",
+
+            nacionality: "BR",
+            number2: "12312312377",
+            doc_type2: "CPF"
+          }
         }
       ];
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
+      this.editedIndex = this.motoristas.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      const index = this.desserts.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.desserts.splice(index, 1);
+      const index = this.motoristas.indexOf(item);
+      confirm("Tem certeza de apagar este motorista?") &&
+        this.motoristas.splice(index, 1);
     },
 
     close() {
@@ -203,12 +299,20 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        Object.assign(this.motoristas[this.editedIndex], this.editedItem);
       } else {
-        this.desserts.push(this.editedItem);
+        this.motoristas.push(this.editedItem);
       }
       this.close();
     }
   }
 };
 </script>
+<style scoped>
+#fondo-motorista{
+background-color: rgba(255, 255, 0, 0.267);
+
+margin-left:  100px;
+margin-right: 100px;
+}
+</style>
