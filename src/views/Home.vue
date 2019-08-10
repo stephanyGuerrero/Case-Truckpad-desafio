@@ -2,13 +2,9 @@
 
   <v-flex id="fondo-motorista">
 <v-layout align-center justify-center fill-height class="mx-5 my-5">
-  <v-flex>
-    <v-btn> Voltar </v-btn>
-    <v-btn> Gostou ?</v-btn>
-  </v-flex>
 
   
-  <v-data-table :headers="headers" :items="motoristas" sort-by="calories" class="elevation-1">
+  <v-data-table :headers="headers" :items="motoristas" class="elevation-1" >
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>MOTORISTAS</v-toolbar-title>
@@ -86,6 +82,12 @@
                   <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.documents.doc_type2" label="Tipo de Documento"></v-text-field>
                   </v-flex>
+                  <v-flex sm2 xs9 class="mx-4">
+                                        <v-switch color="primary" v-model="motoristas.active"
+                                            :label="`Motorista: ${motoristas.active ? 'ativo' : 'inativo'}`">
+                                        </v-switch>
+                                    </v-flex>
+
 
 
                 </v-layout>
@@ -103,6 +105,10 @@
       </v-toolbar>
     </template>
 
+     <template v-slot:item.ati="{ item }" >
+      <td :v-text="`${motoristas.active ? 'ativo' : 'inativo'}`"/>
+    </template>
+
     <template v-slot:item.action="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -115,12 +121,19 @@
 
 
 </v-layout>
+  <v-flex md12>
+    <v-btn> Voltar </v-btn>
+  </v-flex>
+  <v-flex>
+    <v-btn> Gostou ?</v-btn>
+    </v-flex>
   </v-flex>
 
 </template>
 <script>
 export default {
   data: () => ({
+    
     dialog: false,
     sortable: false,
     headers: [
@@ -130,19 +143,28 @@ export default {
         sortable: false,
         value: "name"
       },
-      { text: "Data de nascimento", value: "birth_date", sortable: false },
-      { text: "Cidade", value: "city", sortable: false },
+      { text: "Data de nascimento", 
+        value: "birth_date",
+        sortable: false },
+
+      { text: "Cidade",
+        value: "city",
+        sortable: false },
+        
       {
         text: "Tipo de Documento",
         value: "documents.doc_type",
         sortable: false
       },
       { text: "Categoria", value: "documents.category", sortable: false },
-      { text: "Actions", value: "action", sortable: false }
-    ],
+      { text: "Actions", value: "action", sortable: false },
+      { text: "motorista", value: "ati", sortable: false }
+   
+   ],
     motoristas: [],
     editedIndex: -1,
     editedItem: {
+      ati: 'ativo',
       name: "",
       birth_date: "",
       state: "",
@@ -171,6 +193,7 @@ export default {
       }
     },
     defaultItem: {
+      ati: 'ativo',
       name: "",
       birth_date: "",
       state: "",
@@ -219,7 +242,7 @@ export default {
   methods: {
     initialize() {
       this.motoristas = [
-        {
+        {ati: 'ativo',
           name: "Pouca Tripa",
           birth_date: "1976-09-22T00:00:00",
           state: "São Paulo",
@@ -234,6 +257,7 @@ export default {
             postal_code: "01300-000",
             street_name: "Avenida Paulista"
           },
+          
           documents: {
             expires_at: "2010-11-23T00:00:00+00:00",
             country: "BR",
