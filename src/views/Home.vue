@@ -1,141 +1,292 @@
 <template>
+  <v-flex id="fondo-motorista" class="mx-5 my-5">
+    <v-layout align-center justify-center fill-height class="my-5">
+      <v-data-table
+        id="table-background"
+        :headers="headers"
+        :items="drivers"
+        class="elevation-5 mt-5 mx-5"
+      >
+        <template v-slot:top>
+          <v-toolbar class="elevation-5" flat color id="tabela">
+            <v-toolbar-title id="titulo">MOTORISTAS</v-toolbar-title>
 
-  <v-flex id="fondo-motorista">
-<v-layout align-center justify-center fill-height class="mx-5 my-5">
+            <v-divider class="mx-4" inset vertical></v-divider>
 
-  
-  <v-data-table :headers="headers" :items="motoristas" class="elevation-1" >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>MOTORISTAS</v-toolbar-title>
+            <v-spacer></v-spacer>
 
-        <v-divider class="mx-4" inset vertical></v-divider>
+            <v-dialog v-model="dialog" max-width="500px">
+              <template v-slot:activator="{ on }">
+                <v-btn id="botoes" dark class="mb-2 elevation-5" v-on="on">Novo Motorista</v-btn>
+              </template>
 
-        <v-spacer></v-spacer>
+              <v-card id="tabela" dark>
+                <v-card-title>
+                  <span class="headline">{{ formTitle }}</span>
 
-        <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">Novo Motorista</v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
+                  <v-spacer></v-spacer>
 
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.name" label="Nome"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.birth_date" label="Data de nascimento"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.state" label="Estado"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.city" label="Cidade"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.addresses.country" label="País"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.addresses.neighborhood" label="Bairro"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.addresses.city" label="Cidade"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.addresses.street_name" label="Nome da Rua"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.addresses.street_number" label="N*"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.addresses.postal_code" label="CEP"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.addresses.complement" label="Complemento"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.documents.expires_at" label="Expiração"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.documents.country" label="Pais"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.documents.number" label="Numero"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.documents.doc_type" label="Tipo de Documento"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.documents.category" label="Categoria"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.documents.nacionality" label="Nacionalidade"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.documents.number2" label="Numero de Documento"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.documents.doc_type2" label="Tipo de Documento"></v-text-field>
-                  </v-flex>
-                  <v-flex sm2 xs9 class="mx-4">
-                                        <v-switch color="primary" v-model="motoristas.active"
-                                            :label="`Motorista: ${motoristas.active ? 'ativo' : 'inativo'}`">
-                                        </v-switch>
-                                    </v-flex>
+                  <v-icon class="mb-5" @click="close">mdi-close</v-icon>
+                </v-card-title>
 
+                <v-card-text>
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-flex xs12>
+                        <span style="color:white; font-size:18px">Dados Pessoais:</span>
+                      </v-flex>
 
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="Nome"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
 
-                </v-layout>
-              </v-container>
-            </v-card-text>
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.birth_date"
+                          label="Data de nascimento"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
+                      <v-flex xs12 sm6 md5>
+                        <v-text-field
+                          v-model="editedItem.state"
+                          label="Estado"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
 
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
+                      <v-flex xs12 sm6 md7>
+                        <v-text-field
+                          v-model="editedItem.city"
+                          label="Cidade"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
 
-     <template v-slot:item.ati="{ item }" >
-      <td :v-text="`${motoristas.active ? 'ativo' : 'inativo'}`"/>
-    </template>
+                      <v-flex xs12>
+                        <span style="color:white; font-size:18px">Endereço:</span>
+                      </v-flex>
 
-    <template v-slot:item.action="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-    </template>
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.addresses.neighborhood"
+                          label="Bairro"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
 
-    <template>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
-  </v-data-table>
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.addresses.city"
+                          label="Cidade"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
 
+                      <v-flex xs12 sm6 md5>
+                        <v-text-field
+                          v-model="editedItem.addresses.country"
+                          label="País"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
 
-</v-layout>
-  <v-flex md12>
-    <v-btn> Voltar </v-btn>
+                      <v-flex xs12 sm6 md7>
+                        <v-text-field
+                          v-model="editedItem.addresses.street_name"
+                          label="Nome da Rua"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm3 md2>
+                        <v-text-field
+                          v-model="editedItem.addresses.street_number"
+                          label="N*"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md4>
+                        <v-text-field
+                          v-model="editedItem.addresses.postal_code"
+                          label="CEP"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field v-model="editedItem.addresses.complement" label="Complemento"></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12>
+                        <span style="color:white; font-size:18px">Documentos:</span>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md4>
+                        <v-text-field
+                          v-model="editedItem.documents.expires_at"
+                          label="Expiração"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md4>
+                        <v-text-field
+                          v-model="editedItem.documents.country"
+                          label="Pais"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md4>
+                        <v-text-field
+                          v-model="editedItem.documents.number"
+                          label="Numero"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.documents.doc_type"
+                          label="Tipo de Documento"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.documents.category"
+                          label="Categoria"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12>
+                        <span style="color:white; font-size:18px">Documentos do País:</span>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.documents.nacionality"
+                          label="Nacionalidade"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.documents.number2"
+                          label="Numero de Documento"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12 sm6 md6>
+                        <v-text-field
+                          v-model="editedItem.documents.doc_type2"
+                          label="Tipo de Documento"
+                          :rules="[rules.required]"
+                          name="input-10-2"
+                          class="input-group--focused"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex sm2 xs9 class="mx-4">
+                        <v-switch
+                          color="primary"
+                          v-model="editedItem.active"
+                          :label="`Motorista: ${editedItem.active ? 'ativo' : 'inativo'}`"
+                        ></v-switch>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+
+                  <v-btn text @click="close">Cancel</v-btn>
+                  <v-btn text @click="save">Save</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+
+        <template v-slot:item.active="{ item }">
+          <td v-text="`${item.active ? 'ativo' : 'inativo'}`" />
+        </template>
+
+        <template v-slot:item.action="{ item }" v-slot:activator="{ on }">
+          <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+          <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+        </template>
+      </v-data-table>
+    </v-layout>
+
+    <v-layout align-center justify-center row fill-height>
+      <v-btn id="botoes" dark class="mx-5 my-5 elevation-5" href="/">Voltar</v-btn>
+      <a
+        href="https://api.whatsapp.com/send?1=pt_BR&amp;phone=5567992615784"
+        target="_blank"
+        style="text-decoration:none"
+      >
+        <v-btn id="botoes" dark class="mx-5 my-5 elevation-5">
+          Gostou ?
+          <v-icon color="red">mdi-heart</v-icon>
+        </v-btn>
+      </a>
+    </v-layout>
   </v-flex>
-  <v-flex>
-    <v-btn> Gostou ?</v-btn>
-    </v-flex>
-  </v-flex>
-
 </template>
 <script>
 export default {
   data: () => ({
-    
     dialog: false,
-    sortable: false,
+    rules: {
+      required: value => !!value || "Obrigatorio."
+    },
     headers: [
       {
         text: "Nome",
@@ -143,14 +294,10 @@ export default {
         sortable: false,
         value: "name"
       },
-      { text: "Data de nascimento", 
-        value: "birth_date",
-        sortable: false },
+      { text: "Data de nascimento", value: "birth_date", sortable: false },
 
-      { text: "Cidade",
-        value: "city",
-        sortable: false },
-        
+      { text: "Cidade", value: "city", sortable: false },
+
       {
         text: "Tipo de Documento",
         value: "documents.doc_type",
@@ -158,13 +305,15 @@ export default {
       },
       { text: "Categoria", value: "documents.category", sortable: false },
       { text: "Actions", value: "action", sortable: false },
-      { text: "motorista", value: "ati", sortable: false }
-   
-   ],
-    motoristas: [],
+      { text: "motorista", value: "active", sortable: false }
+    ],
+    driver: {
+      addresses: {},
+      documents: {}
+    },
+    drivers: [],
     editedIndex: -1,
     editedItem: {
-      ati: 'ativo',
       name: "",
       birth_date: "",
       state: "",
@@ -193,7 +342,6 @@ export default {
       }
     },
     defaultItem: {
-      ati: 'ativo',
       name: "",
       birth_date: "",
       state: "",
@@ -241,8 +389,9 @@ export default {
 
   methods: {
     initialize() {
-      this.motoristas = [
-        {ati: 'ativo',
+      this.drivers = [
+        {
+          active: true,
           name: "Pouca Tripa",
           birth_date: "1976-09-22T00:00:00",
           state: "São Paulo",
@@ -257,7 +406,7 @@ export default {
             postal_code: "01300-000",
             street_name: "Avenida Paulista"
           },
-          
+
           documents: {
             expires_at: "2010-11-23T00:00:00+00:00",
             country: "BR",
@@ -269,9 +418,9 @@ export default {
             number2: "32132132188",
             doc_type2: "CPF"
           }
-          
         },
         {
+          active: false,
           name: "Quase nada",
           birth_date: "1986-09-22T00:00:00",
           state: "Rio de Janeiro",
@@ -302,30 +451,32 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.motoristas.indexOf(item);
+      this.editedIndex = this.drivers.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      const index = this.motoristas.indexOf(item);
+      const index = this.drivers.indexOf(item);
       confirm("Tem certeza de apagar este motorista?") &&
-        this.motoristas.splice(index, 1);
+        this.drivers.splice(index, 1);
     },
-
     close() {
       this.dialog = false;
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
+        this.driver = {
+          addresses: {},
+          documents: {}
+        };
         this.editedIndex = -1;
       }, 300);
     },
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.motoristas[this.editedIndex], this.editedItem);
+        Object.assign(this.drivers[this.editedIndex], this.editedItem);
       } else {
-        this.motoristas.push(this.editedItem);
+        this.drivers.push(this.editedItem);
       }
       this.close();
     }
@@ -333,10 +484,28 @@ export default {
 };
 </script>
 <style scoped>
-#fondo-motorista{
-background-color: rgba(255, 255, 0, 0.267);
+#fondo-motorista {
+  background-color: rgba(255, 255, 0, 0.267);
+}
 
-margin-left:  100px;
-margin-right: 100px;
+#tabela {
+  border-radius: 15px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  border: solid 1px;
+  background-color: rgb(56, 95, 115);
+}
+
+#table-background {
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.664);
+}
+
+#botoes {
+  border-radius: 20px;
+}
+
+#titulo {
+  color: white;
+  text-shadow: 1px 1px black;
 }
 </style>
